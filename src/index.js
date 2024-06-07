@@ -10,10 +10,10 @@ import '@aws-amplify/ui-react/styles.css';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-
-  <Authenticator>
+  <React.StrictMode>
     <App />
-  </Authenticator>
+  </React.StrictMode>
+
 );
 
 // If you want to start measuring performance in your app, pass a function
