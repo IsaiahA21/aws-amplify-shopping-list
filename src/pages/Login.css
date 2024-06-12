@@ -1,0 +1,25 @@
+/* Login.css */
+
+.dark .authenticator-container .amplify-ui {
+  color: #e9f9fc; /* Text color in dark mode */
+}
+.dark .authenticator-container div {
+  background-color: #2d3748;
+}
+.dark .authenticator-container label {
+  color: white; /* Input text color in dark mode */
+}
+.dark .authenticator-container input {
+  background-color: #2d3748; /* Input background color in dark mode */
+  color: #e9f9fc; /* Input text color in dark mode */
+  border: 1px solid white; /* Input border color in dark mode */
+}
+
+.dark .authenticator-container input::placeholder {
+  color: #a0aec0; /* Placeholder text color in dark mode */
+}
+
+/* Adjust the border color of the vertical divider in dark mode */
+.dark .border-l {
+  border-color: #4a5568;
+}
