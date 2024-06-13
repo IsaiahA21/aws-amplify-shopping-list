@@ -10,42 +10,11 @@ import {
     ToggleButton,
     ToggleButtonGroup,
 } from '@aws-amplify/ui-react';
+import { useDarkMode } from '../hooks/useDarkMode'; // Import the custom hook
 
 const Login = () => {
-    const [darkMode, setDarkMode] = useState(
-        sessionStorage.getItem('darkMode') === 'true',
-    );
+    const [darkMode, toggleDarkMode] = useDarkMode();
     const navigate = useNavigate();
-
-    const toggleDarkMode = () => {
-        const newDarkMode = !darkMode;
-        setDarkMode(newDarkMode);
-        sessionStorage.setItem('darkMode', newDarkMode ? 'true' : 'false'); // Store darkMode in sessionStorage
-        console.log(newDarkMode)
-        console.log(sessionStorage.getItem('darkMode'));
-
-    }
-
-    useEffect(() => {
-        // Check memory for if darkMode is there already, if not, check the user's system settings
-        let darkModeQuery = null;
-        if (sessionStorage.getItem('darkMode') === null) {
-            darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-            setDarkMode(darkModeQuery.matches);
-            sessionStorage.setItem('darkMode', darkModeQuery.matches ? 'true' : 'false'); // Store darkMode in sessionStorage
-        }
-        //the darkMode is already in memory
-        const handleStorageChange = () => {
-            setDarkMode(sessionStorage.getItem('darkMode') === 'true');
-        };
-        console.log("useffect" + sessionStorage.getItem('darkMode'));
-
-        window.addEventListener('storage', handleStorageChange);
-
-        return () => {
-            window.removeEventListener('storage', handleStorageChange);
-        };
-    }, []);
 
     const continueAsGuest = () => {
         navigate('/ShoppingList');
@@ -57,10 +26,9 @@ const Login = () => {
     };
     return (
         // if darkMode is true, add the dark class to the div
-        <div className={`${darkMode && "dark"}`}>
-
+        <div className={`${darkMode ? 'dark' : ''}`}>
             <ThemeProvider theme={theme} colorMode={darkMode ? 'dark' : 'light'} >
-                <div className="login-container min-h-screen bg-neutral-100 dark:bg-neutral-900 flex flex-col items-center justify-center">
+                <div className="login-container min-h-screen bg-white dark:bg-neutral-800 flex flex-col items-center justify-center">
                     <div className="flex flex-col items-center justify-center sm:flex-row sm:space-x-4">
                         <button
                             onClick={continueAsGuest}

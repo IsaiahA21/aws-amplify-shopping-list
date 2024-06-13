@@ -5,6 +5,7 @@ module.exports = {
   ],
   theme: {
     extend: {
+      display: ["group-hover"],
       keyframes: {
         typing: {
           "0%": {

@@ -1,0 +1,18 @@
+.togglebutton {
+  border: 2px white solid;
+  background-color: pink;
+}
+
+.dark .togglebutton {
+  border: 2px white solid;
+  background-color: yellow;
+}
+
+.tooltip {
+  visibility: hidden;
+  position: absolute;
+}
+.has-tooltip:hover .tooltip {
+  visibility: visible;
+  z-index: 100;
+}
