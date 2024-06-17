@@ -5,7 +5,6 @@ import {
     ThemeProvider,
 } from '@aws-amplify/ui-react';
 import { useDarkMode } from '../hooks/useDarkMode';
-import { Fragment } from 'react'
 import {
     Disclosure,
     Menu,
@@ -14,15 +13,28 @@ import {
     MenuItems,
     Transition,
 } from '@headlessui/react'
-import { SunIcon, MoonIcon, SparklesIcon } from '@heroicons/react/24/outline'
+import { SunIcon, MoonIcon } from '@heroicons/react/24/outline'
 import "./ShoppingList.css"
+import AddItem from '../Components/AddItem';
+import ItemList from '../Components/ItemList';
+import itemData from "../others/items.json";
+import { v4 as uuidv4 } from 'uuid'
 
 const ShoppingList = () => {
     const [darkMode, toggleDarkMode, disableDarkMode, enableDarkMode] = useDarkMode();
-    const [showAddDiv, setShowAddDiv] = useState(false); // State to manage div visibility
+    const [items, setItems] = useState([]);
 
-    const handleInputClick = () => {
-        setShowAddDiv(true);
+    useEffect(() => {
+        setItems(itemData);
+    }, []);
+
+    const handleAddItem = (newItemName) => {
+        const newItem = { id: uuidv4(), name: newItemName };
+        // uses the spread operator to copy the existing items array and add the new item to the front of the array.
+        setItems([newItem, ...items]); //
+    };
+    const handleDeleteItem = (itemToDelete) => {
+        setItems(items.filter(item => item.id !== itemToDelete.id)); // Remove the item from the list
     };
     const theme = {
         name: 'my-theme',
@@ -128,35 +140,15 @@ const ShoppingList = () => {
                                 <h1>Shopping List</h1>
                             </div>
                         </div>
+                        {/*In AddItem, When the add button is clicked, it calls the onAdd function passed down as a prop to add the item to the list.  */}
+                        {/* The AddItem component is responsible for adding new items, but the actual list of items is managed by the ShoppingList component. 
+                        For the ShoppingList component to update the items, the AddItem component needs to communicate the new item back to the ShoppingList. */}
+                        <AddItem onAdd={handleAddItem} />
 
-                        <div className="w-full flex justify-center">
-                            <div className="flex items-center w-5/6 border border-gray-200 h-14 rounded rounded-b-none">
-                                <input
-                                    type="checkbox"
-                                    className="mx-2 h-5 w-5 hover:cursor-pointer"
-                                    disabled
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Add an Item"
-                                    className="flex-grow outline-none focus:border-b focus:border-black"
-                                    onClick={handleInputClick}
-                                />
-                            </div>
-
+                        {/* The handleDeleteItem function is passed to ItemList as onDelete. */}
+                        <div className='mt-2'>
+                            <ItemList allItems={items} onDelete={handleDeleteItem} />
                         </div>
-                        {showAddDiv && (
-                            <div className=" w-5/6 mx-auto flex justify-between items-center bg-gray-400 p-2  border-gray-300 h-14 rounded rounded-t-none">
-                                <button className="has-tooltip group flex items-center p-2 hover:bg-gray-100 rounded-lg dark:focus:ring-gray-700">
-                                    <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black mt-12'>use computer vision</span>
-                                    <SparklesIcon className="text-yellow-400 w-5 h-auto" />
-                                </button>
-
-                                <button type="button" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Add</button>
-                            </div>
-
-                        )}
-
                     </main>
                 </div>
             </ThemeProvider >
