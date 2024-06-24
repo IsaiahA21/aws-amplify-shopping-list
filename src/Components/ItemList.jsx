@@ -31,13 +31,11 @@ const ItemList = ({ allItems = [], onDelete }) => {
             checked={markedForDeletion.includes(item.id)}
             onChange={() => handleDelete(item)}
           />
-          <div
-          className=""
-          >
+          <div className="dark:text-gray-200">
             <span
               className={`${
                 markedForDeletion.includes(item.id) ? "line-through" : ""
-              }`}
+              } `}
             >
               {item.name}
             </span>
