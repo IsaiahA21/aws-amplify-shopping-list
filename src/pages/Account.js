@@ -1,11 +1,12 @@
 import { useDarkMode } from '../hooks/useDarkMode';
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
     defaultDarkModeOverride,
-    ThemeProvider, AccountSettings, Card
+    ThemeProvider, AccountSettings, Card, withAuthenticator
 } from '@aws-amplify/ui-react';
 import Navbar from '../Components/Navbar';
+
 
 /** FOr handling user reset password
  * https://sst.dev/archives/handle-forgot-and-reset-password.html
@@ -13,7 +14,7 @@ import Navbar from '../Components/Navbar';
  * https://medium.com/@muftaudeenjimoh/react-and-authentication-with-aws-amplify-and-cognito-2ccf3aa825e4
  */
 
-const Account = () => {
+const Account = (props) => {
     const [darkMode, toggleDarkMode, disableDarkMode, enableDarkMode] = useDarkMode();
     const [firstName, setFirstName] = useState("Isaiah");
     const [lastName, setLastName] = useState("Asaolu");
@@ -41,7 +42,13 @@ const Account = () => {
     };
 
     const isSaveDisabled = (newFirstName === firstName && newLastName === lastName) || newFirstName === '' || newLastName === '';
+    const navi = useNavigate();
 
+    useEffect(() => {
+        if (!props.isAuthenticated) {
+            navi("/Login");
+        }
+    }, [props.isAuthenticated, navi]);
     return (
         <div className={`${darkMode && "dark"}`}>
             <ThemeProvider theme={theme} colorMode={darkMode ? 'dark' : 'light'} >
@@ -50,6 +57,8 @@ const Account = () => {
                         darkMode={darkMode}
                         disableDarkMode={disableDarkMode}
                         enableDarkMode={enableDarkMode}
+                        isAuthenticated={props.isAuthenticated}
+                        updatedIsAuthenticated={props.updatedIsAuthenticated}
                     />
                     <main>
                         {/* user avatar */}
@@ -106,4 +115,4 @@ const Account = () => {
         </div>
     );
 }
-export default Account;
+export default (Account);// wrap the component with the withAuthenticator meaning the user must be logined to access the page

@@ -6,11 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { BrowserRouter } from 'react-router-dom';
-// import Amplify from 'aws-amplify';
-// import awsconfig from './aws-exports';
-
-// Amplify.configure(awsconfig);
-
+import config from './aws-exports'
+import { Amplify } from 'aws-amplify'
+Amplify.configure(config)
 
 // Configure Amplify
 const root = ReactDOM.createRoot(document.getElementById('root'));

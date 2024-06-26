@@ -10,17 +10,29 @@ import {
   MenuItems,
   Transition,
 } from "@headlessui/react";
-import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
+import { SunIcon, MoonIcon, UserIcon } from "@heroicons/react/24/outline";
 import { useDarkMode } from "../hooks/useDarkMode";
+import { signOut } from "aws-amplify/auth";
+import { useNavigate } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Navbar = ({ darkMode, disableDarkMode, enableDarkMode }) => {
+const Navbar = (props) => {
   const [firstName, setFirstName] = useState("Isaiah");
   const [lastName, setLastName] = useState("Asaolu");
+  const nav = useNavigate();
 
+  async function handleSignOut() {
+    try {
+      await signOut();
+      props.updatedIsAuthenticated(false);
+      nav("/");
+    } catch (error) {
+      console.log("Error in Navabar.js when attempting to signout: " + error);
+    }
+  }
   return (
     <>
       {/* For Toggling to and from darkmode */}
@@ -43,7 +55,7 @@ const Navbar = ({ darkMode, disableDarkMode, enableDarkMode }) => {
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   <div
                     className={`mx-4  ${
-                      darkMode
+                      props.darkMode
                         ? "bg-gray-700 border-gray-500"
                         : "bg-white border-gray-300"
                     } rounded-xl border `}
@@ -51,30 +63,33 @@ const Navbar = ({ darkMode, disableDarkMode, enableDarkMode }) => {
                     <div className="flex items-center">
                       <button
                         className={`flex items-center justify-center w-10 h-10 rounded-xl ${
-                          darkMode
+                          props.darkMode
                             ? "bg-gray-700 hover:bg-gray-400"
                             : "bg-white hover:bg-slate-100"
                         }`}
-                        onClick={disableDarkMode}
+                        onClick={props.disableDarkMode}
                       >
                         <SunIcon className="w-6 h-6 text-orange-300" />
                       </button>
                       <button
                         className={`flex items-center justify-center w-10 h-10 rounded-xl ${
-                          darkMode
+                          props.darkMode
                             ? "bg-gray-700 hover:bg-gray-400"
                             : "bg-white hover:bg-slate-100"
                         }`}
-                        onClick={enableDarkMode}
+                        onClick={props.enableDarkMode}
                       >
                         <MoonIcon className="w-6 h-6 text-gray-900" />
                       </button>
                     </div>
                   </div>
                   {/* user fullname */}
-                  <div className="hidden sm:block text-black dark:text-white">
-                    {firstName + " " + lastName}
-                  </div>
+                  {props.isAuthenticated && (
+                    <div className="hidden sm:block text-black dark:text-white">
+                      {firstName + " " + lastName}
+                    </div>
+                  )}
+
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-2">
                     <div>
@@ -82,9 +97,13 @@ const Navbar = ({ darkMode, disableDarkMode, enableDarkMode }) => {
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
                         <div class="relative inline-flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-                          <span class="font-medium text-2xl text-gray-600 dark:text-gray-300">
-                            {firstName.at(0) + lastName.at(0)}
-                          </span>
+                          {props.isAuthenticated ? (
+                            <span class="font-medium text-2xl text-gray-600 dark:text-gray-300">
+                              {firstName.at(0) + lastName.at(0)}
+                            </span>
+                          ) : (
+                            <UserIcon className="w-8 h-auto" />
+                          )}
                         </div>
                       </MenuButton>
                     </div>
@@ -97,32 +116,50 @@ const Navbar = ({ darkMode, disableDarkMode, enableDarkMode }) => {
                       leaveTo="transform opacity-0 scale-95"
                     >
                       <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <MenuItem>
-                          {({ focus }) => (
-                            <Link
-                              to="/Account"
-                              className={classNames(
-                                focus ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                        {props.isAuthenticated ? (
+                          <>
+                            <MenuItem>
+                              {({ focus }) => (
+                                <Link
+                                  to="/Account"
+                                  className={classNames(
+                                    focus ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
+                                  )}
+                                >
+                                  Account
+                                </Link>
                               )}
-                            >
-                              Account
-                            </Link>
-                          )}
-                        </MenuItem>
-                        <MenuItem>
-                          {({ focus }) => (
-                            <Link
-                              to="/Login"
-                              className={classNames(
-                                focus ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                            </MenuItem>
+                            <MenuItem>
+                              {({ focus }) => (
+                                <div
+                                  className={classNames(
+                                    focus ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700 hover:cursor-pointer"
+                                  )}
+                                  onClick={handleSignOut}
+                                >
+                                  Sign out
+                                </div>
                               )}
-                            >
-                              Sign out
-                            </Link>
-                          )}
-                        </MenuItem>
+                            </MenuItem>
+                          </>
+                        ) : (
+                          <MenuItem>
+                            {({ focus }) => (
+                              <Link
+                                to="/Login"
+                                className={classNames(
+                                  focus ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700"
+                                )}
+                              >
+                                Login
+                              </Link>
+                            )}
+                          </MenuItem>
+                        )}
                       </MenuItems>
                     </Transition>
                   </Menu>

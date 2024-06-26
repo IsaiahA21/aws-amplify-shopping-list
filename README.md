@@ -68,3 +68,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+### Implementing AWS Amplify 
+helpful link: https://www.youtube.com/watch?v=tx0k7daEoUA
+https://www.youtube.com/watch?v=puaydMvngj4

@@ -20,7 +20,7 @@ const AddItem = ({ onAdd }) => {
     setShowAddDiv(false);
   };
 
-  /**Modal fucntions */
+  /**Modal functions */
   const handleOpenModal = () => {
     setOpenModal(true);
   };

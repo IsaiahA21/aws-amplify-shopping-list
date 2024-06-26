@@ -9,10 +9,19 @@ import ItemList from '../Components/ItemList';
 import itemData from "../others/items.json";
 import { v4 as uuidv4 } from 'uuid';
 import Navbar from '../Components/Navbar';
+import { Hub } from 'aws-amplify/utils';
+import { Amplify } from 'aws-amplify';
 
-const ShoppingList = () => {
+import { confirmUserAttribute, getCurrentUser, fetchUserAttributes, cognito } from 'aws-amplify/auth';
+
+
+
+const ShoppingList = (props) => {
     const [darkMode, toggleDarkMode, disableDarkMode, enableDarkMode] = useDarkMode();
     const [items, setItems] = useState([]);
+    const [user, setUser] = useState(null); // State to hold user info
+    const { username, userId, signInDetails } = useState(null);
+
 
     useEffect(() => {
         setItems(itemData);
@@ -31,15 +40,19 @@ const ShoppingList = () => {
         name: 'my-theme',
         overrides: [defaultDarkModeOverride],
     };
-
     return (
+
         <div className={`${darkMode && "dark"}`}>
+            {/* {console.log(state.user.signInDetails.loginId)
+            } */}
             <ThemeProvider theme={theme} colorMode={darkMode ? 'dark' : 'light'}>
                 <div className="login-container min-h-screen bg-white dark:bg-neutral-800">
                     <Navbar
                         darkMode={darkMode}
                         disableDarkMode={disableDarkMode}
                         enableDarkMode={enableDarkMode}
+                        isAuthenticated={props.isAuthenticated}
+                        updatedIsAuthenticated={props.updatedIsAuthenticated}
                     />
                     <main>
                         <div className="flex flex-col justify-center w-5/6 mx-auto my-5">
