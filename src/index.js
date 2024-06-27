@@ -8,19 +8,20 @@ import '@aws-amplify/ui-react/styles.css';
 import { BrowserRouter } from 'react-router-dom';
 import config from './aws-exports'
 import { Amplify } from 'aws-amplify'
-Amplify.configure(config)
+import { AuthProvider } from './AuthContext';
 
+Amplify.configure(config)
 // Configure Amplify
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <React.StrictMode>
+  <AuthProvider>
     <BrowserRouter>
 
       <App />
     </BrowserRouter>
 
-  </React.StrictMode>
+    </AuthProvider>
 
 );
 

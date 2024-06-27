@@ -11,26 +11,27 @@ import {
   Transition,
 } from "@headlessui/react";
 import { SunIcon, MoonIcon, UserIcon } from "@heroicons/react/24/outline";
+import {} from "@heroicons/react/24/solid";
 import { useDarkMode } from "../hooks/useDarkMode";
 import { signOut } from "aws-amplify/auth";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 const Navbar = (props) => {
-  const [firstName, setFirstName] = useState("Isaiah");
-  const [lastName, setLastName] = useState("Asaolu");
-  const nav = useNavigate();
+  const navigate = useNavigate();
+  const { isAuthenticated, currentUser, setIsAuthenticated } = useAuth();
 
   async function handleSignOut() {
     try {
       await signOut();
-      props.updatedIsAuthenticated(false);
-      nav("/");
+      setIsAuthenticated(false);
+      navigate("/");
     } catch (error) {
-      console.log("Error in Navabar.js when attempting to signout: " + error);
+      console.log("Error in Navbar.js when attempting to sign out: " + error);
     }
   }
   return (
@@ -84,23 +85,34 @@ const Navbar = (props) => {
                     </div>
                   </div>
                   {/* user fullname */}
-                  {props.isAuthenticated && (
+                  {isAuthenticated && currentUser ? (
                     <div className="hidden sm:block text-black dark:text-white">
-                      {firstName + " " + lastName}
+                      {currentUser.name}
                     </div>
+                  ) : (
+                    console.log("name not displayed")
                   )}
 
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-2">
                     <div>
-                      <MenuButton className="relative flex rounded-full bg-gray-800 text-sm  focus:ring-white focus:ring-offset-4 focus: ring-offset-gray-800">
+                      <MenuButton className="relative flex rounded-full bg-gray-800 text-sm  focus:ring-white focus:ring-offset-4 focus:ring-offset-gray-800">
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
-                        <div class="relative inline-flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-                          {props.isAuthenticated ? (
-                            <span class="font-medium text-2xl text-gray-600 dark:text-gray-300">
-                              {firstName.at(0) + lastName.at(0)}
-                            </span>
+                        <div className="relative inline-flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                          {isAuthenticated && currentUser ? (
+                            (() => {
+                              const names = currentUser.name.split(" ");
+                              const firstNameInitial = names[0][0];
+                              const lastNameInitial =
+                                names[names.length - 1][0];
+                              return (
+                                <span className="font-medium text-2xl text-gray-600 dark:text-gray-300">
+                                  {firstNameInitial}
+                                  {lastNameInitial}
+                                </span>
+                              );
+                            })()
                           ) : (
                             <UserIcon className="w-8 h-auto" />
                           )}
@@ -116,7 +128,7 @@ const Navbar = (props) => {
                       leaveTo="transform opacity-0 scale-95"
                     >
                       <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        {props.isAuthenticated ? (
+                        {isAuthenticated && currentUser ? (
                           <>
                             <MenuItem>
                               {({ focus }) => (

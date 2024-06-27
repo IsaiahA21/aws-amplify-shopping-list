@@ -11,10 +11,14 @@ import {
   ToggleButtonGroup,
 } from '@aws-amplify/ui-react';
 import { useDarkMode } from '../hooks/useDarkMode'; // Import the custom hook
+import { useAuth } from '../AuthContext';
+import { AuthUser, fetchUserAttributes } from 'aws-amplify/auth';
 
 const Login = (props) => {
   const [darkMode, toggleDarkMode] = useDarkMode();
   const navigate = useNavigate();
+  const { setIsAuthenticated, setCurrentUser } = useAuth();
+
 
   const continueAsGuest = () => {
     navigate('/ShoppingList');
@@ -42,11 +46,15 @@ const Login = (props) => {
               <Authenticator loginMechanisms={['email']}
               // socialProviders={['amazon', 'apple', 'facebook', 'google']}
               >
-                {({user }) =>
-                {
+                {({ user }) => {
                   if (user) {
-                    props.updatedIsAuthenticated(true)
-                    navigate('/ShoppingList');
+                    fetchUserAttributes().then(userDetails => {
+                      console.log("log in baby")
+                      setIsAuthenticated(true);
+                      setCurrentUser(userDetails);
+                      navigate('/ShoppingList');
+                    }
+                    )
                   }
                   return null;
                 }

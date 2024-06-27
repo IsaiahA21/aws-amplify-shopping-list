@@ -6,6 +6,9 @@ import {
     ThemeProvider, AccountSettings, Card, withAuthenticator
 } from '@aws-amplify/ui-react';
 import Navbar from '../Components/Navbar';
+import { AuthUser, fetchUserAttributes } from 'aws-amplify/auth';
+import { useAuth } from "../AuthContext";
+import ResetPassword from '../Components/ResetPasswordModal';
 
 
 /** FOr handling user reset password
@@ -22,6 +25,9 @@ const Account = (props) => {
 
     const [newFirstName, setNewFirstName] = useState(firstName);
     const [newLastName, setNewLastName] = useState(lastName);
+    const navigate = useNavigate();
+    const { isAuthenticated, currentUser, setIsAuthenticated } = useAuth();
+    const [openModal, setOpenModal] = useState(false);
 
     const theme = {
         name: 'my-theme',
@@ -30,6 +36,14 @@ const Account = (props) => {
     const handleSuccess = () => {
         alert('password is successfully changed!')
     }
+    /**Modal functions */
+    const handleOpenPwdModal = () => {
+        setOpenModal(true);
+    };
+
+    const handleClosePwdModal = () => {
+        setOpenModal(false);
+    };
     const submitUserChanges = () => {
         if (newFirstName !== '' || newLastName !== '') {
             if (newFirstName !== firstName || newLastName !== lastName) {
@@ -41,14 +55,32 @@ const Account = (props) => {
         }
     };
 
-    const isSaveDisabled = (newFirstName === firstName && newLastName === lastName) || newFirstName === '' || newLastName === '';
-    const navi = useNavigate();
-
     useEffect(() => {
-        if (!props.isAuthenticated) {
-            navi("/Login");
+        // Redirect to login if not authenticated
+        if (!isAuthenticated || !currentUser) {
+            navigate('/Login');
+        } else {
+            // Fetch user attributes if authenticated
+            const fetchUserAttributes = async () => {
+                try {
+                    // Assuming currentUser is correctly set by the AuthContext
+                    const fullName = currentUser.name;
+                    const [first, last] = fullName.split(' ');
+                    setFirstName(first || '');
+                    setLastName(last || '');
+                    setUserEmail(currentUser.email);
+                    setNewFirstName(first || '');
+                    setNewLastName(last || '');
+                } catch (error) {
+                    console.error('Error fetching user attributes', error);
+                }
+            };
+            fetchUserAttributes();
         }
-    }, [props.isAuthenticated, navi]);
+    }, [isAuthenticated, currentUser, navigate]);
+
+    const isSaveDisabled = (newFirstName === firstName && newLastName === lastName) || newFirstName === '' || newLastName === '';
+
     return (
         <div className={`${darkMode && "dark"}`}>
             <ThemeProvider theme={theme} colorMode={darkMode ? 'dark' : 'light'} >
@@ -59,6 +91,8 @@ const Account = (props) => {
                         enableDarkMode={enableDarkMode}
                         isAuthenticated={props.isAuthenticated}
                         updatedIsAuthenticated={props.updatedIsAuthenticated}
+                        currentUser={props.currentUser}
+
                     />
                     <main>
                         {/* user avatar */}
@@ -107,12 +141,20 @@ const Account = (props) => {
                             <button onClick={submitUserChanges} type="button" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
                                 disabled={isSaveDisabled}
                             >Save</button>
-                            <button type="button" class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-200 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">Reset Password</button>
+                            <button
+                                onClick={handleOpenPwdModal}
+                                type="button" class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-200 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+                            >Reset Password
+                            </button>
                         </form>
                     </main>
                 </div>
             </ThemeProvider>
+            <ResetPassword
+             isOpen={openModal}
+             closeModal={handleClosePwdModal}
+             />
         </div>
     );
 }
-export default (Account);// wrap the component with the withAuthenticator meaning the user must be logined to access the page
+export default withAuthenticator(Account);// wrap the component with the withAuthenticator meaning the user must be logined to access the page

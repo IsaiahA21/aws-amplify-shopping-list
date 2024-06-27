@@ -11,8 +11,8 @@ import { v4 as uuidv4 } from 'uuid';
 import Navbar from '../Components/Navbar';
 import { Hub } from 'aws-amplify/utils';
 import { Amplify } from 'aws-amplify';
-
 import { confirmUserAttribute, getCurrentUser, fetchUserAttributes, cognito } from 'aws-amplify/auth';
+import { useAuth } from "../AuthContext";
 
 
 
@@ -21,6 +21,7 @@ const ShoppingList = (props) => {
     const [items, setItems] = useState([]);
     const [user, setUser] = useState(null); // State to hold user info
     const { username, userId, signInDetails } = useState(null);
+    const { isAuthenticated, currentUser, setIsAuthenticated } = useAuth();
 
 
     useEffect(() => {
@@ -28,6 +29,7 @@ const ShoppingList = (props) => {
     }, []);
 
     const handleAddItem = (newItemName) => {
+        console.log("The user is " + props.user)
         const newItem = { id: uuidv4(), name: newItemName };
         setItems((currItems) => [newItem, ...currItems]);
     };
@@ -51,13 +53,15 @@ const ShoppingList = (props) => {
                         darkMode={darkMode}
                         disableDarkMode={disableDarkMode}
                         enableDarkMode={enableDarkMode}
-                        isAuthenticated={props.isAuthenticated}
-                        updatedIsAuthenticated={props.updatedIsAuthenticated}
+                    // isAuthenticated={props.isAuthenticated}
+                    // updatedIsAuthenticated={props.updatedIsAuthenticated}
+                    // currentUser={props.currentUser}
                     />
                     <main>
                         <div className="flex flex-col justify-center w-5/6 mx-auto my-5">
                             <div className="border-b border-black text-4xl font-semibold text-left dark:text-gray-300 dark:border-gray-400">
                                 <h1>Shopping List</h1>
+                                {/* {console.log("isAuthenticated is " + isAuthenticated)} */}
                             </div>
                         </div>
                         {/*In AddItem, When the add button is clicked, it calls the onAdd function passed down as a prop to add the item to the list.  */}
