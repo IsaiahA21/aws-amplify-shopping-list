@@ -1,0 +1,14 @@
+{
+  "resourceName": "ShoppingListDB",
+  "tableName": "Items",
+  "partitionKey": {
+    "fieldName": "userId",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "timeStamp",
+    "fieldType": "number"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}
