@@ -13,7 +13,7 @@ import { Hub } from 'aws-amplify/utils';
 import { Amplify } from 'aws-amplify';
 import { confirmUserAttribute, getCurrentUser, fetchUserAttributes, cognito } from 'aws-amplify/auth';
 import { useAuth } from "../AuthContext";
-
+import { getUserItems } from "../api/db"
 
 
 const ShoppingList = (props) => {
@@ -25,17 +25,30 @@ const ShoppingList = (props) => {
 
 
     useEffect(() => {
-        setItems(itemData);
+        // setItems(itemData);
+        async function fetchData() {
+            try {
+                const userItems = await getUserItems();
+                console.log("retrived this user items:" + JSON.stringify(userItems))
+                // Sort items by timestamp in descending order (most recent first)
+                const sortedItems = userItems.sort((a, b) => b.timeStamp - a.timeStamp);
+                setItems(sortedItems);
+
+            } catch (error) {
+                console.error('Error fetching user items:', error);
+            }
+        }
+        fetchData();
     }, []);
 
-    const handleAddItem = (newItemName) => {
-        console.log("The user is " + props.user)
-        const newItem = { id: uuidv4(), name: newItemName };
-        setItems((currItems) => [newItem, ...currItems]);
+    const handleAddItem = (ItemObject) => {
+        // console.log("The user is " + props.user)
+        // const newItem = { id: uuidv4(), name: newItemName };
+        setItems((currItems) => [ItemObject, ...currItems]);
     };
 
     const handleDeleteItem = (itemToDelete) => {
-        setItems(items.filter(item => item.id !== itemToDelete.id));
+        setItems(items.filter(item => item.timeStamp !== itemToDelete.timeStamp));
     };
 
     const theme = {

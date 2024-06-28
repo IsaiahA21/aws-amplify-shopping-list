@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { SparklesIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import UseAIModal from "./useAIModal";
+import { getUserItems, addUserItem } from "../api/db";
 
 const AddItem = ({ onAdd }) => {
   const [showAddDiv, setShowAddDiv] = useState(false); // State to manage div visibility
@@ -39,6 +40,19 @@ const AddItem = ({ onAdd }) => {
     });
     handleCloseModal(); // Close modal after adding all items
   };
+  const handleAddItem = async () => {
+    try {
+      if (itemText.trim() !== "") {
+        let itemObject = await addUserItem(itemText); // Call addUserItem in db.js
+        onAdd(itemObject); //  update local state
+        setItemText(""); // Clear input after adding item
+      }
+    } catch (error) {
+      console.error("Error adding item:", error);
+      // Handle error as needed
+    }
+  };
+
   return (
     <>
       <div className="w-full flex justify-center">
@@ -56,7 +70,7 @@ const AddItem = ({ onAdd }) => {
             onClick={handleInputClick}
             onKeyUp={(event) => {
               if (event.key === "Enter") {
-                AddItemButton();
+                handleAddItem();
               }
             }}
             onChange={(e) => setItemText(e.target.value)}
@@ -76,7 +90,8 @@ const AddItem = ({ onAdd }) => {
           </button>
           <div>
             <button
-              onClick={AddItemButton}
+              // onClick={AddItemButton}
+              onClick={handleAddItem}
               type="button"
               class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
             >

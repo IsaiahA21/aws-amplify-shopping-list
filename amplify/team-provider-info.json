@@ -9,7 +9,8 @@
       "UnauthRoleName": "amplify-awswebproject-dev-4e9e8-unauthRole",
       "StackName": "amplify-awswebproject-dev-4e9e8",
       "StackId": "arn:aws:cloudformation:us-west-2:763926901433:stack/amplify-awswebproject-dev-4e9e8/b74db2b0-325b-11ef-a435-02da35bb4433",
-      "AmplifyAppId": "d3474n4b5kymz"
+      "AmplifyAppId": "d3474n4b5kymz",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-awswebproject-dev-4e9e8-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
@@ -17,6 +18,15 @@
       },
       "storage": {
         "ShoppingListDB": {}
+      },
+      "function": {
+        "databaseFunction": {
+          "deploymentBucketName": "amplify-awswebproject-dev-4e9e8-deployment",
+          "s3Key": "amplify-builds/databaseFunction-716e62322f644d35385a-build.zip"
+        }
+      },
+      "api": {
+        "ShoppingListAPIGateway": {}
       }
     }
   }
