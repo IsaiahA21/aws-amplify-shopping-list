@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "awswebproject191c03cc_identitypool_191c03cc",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "awsweb191c03cc",
     "userPoolName": "awswebproject191c03cc_userpool_191c03cc",
     "autoVerifiedAttributes": [

@@ -83,6 +83,14 @@
       ]
     }
   },
+  "predictions": {
+    "PredictItems": {
+      "dependsOn": [],
+      "identifyType": "identifyLabels",
+      "providerPlugin": "awscloudformation",
+      "service": "Rekognition"
+    }
+  },
   "storage": {
     "ShoppingListDB": {
       "providerPlugin": "awscloudformation",

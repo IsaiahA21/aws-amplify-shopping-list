@@ -2,6 +2,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { fetchUserAttributes } from 'aws-amplify/auth';//https://ui.docs.amplify.aws/react/getting-started/migration
 import { signOut } from 'aws-amplify/auth';
+import { deleteUser } from 'aws-amplify/auth';
+
 /**
  * AuthContext  provides a way to share authentication state and user information across different components
  */
@@ -51,10 +53,22 @@ export const AuthProvider = ({ children }) => {
             // checkAuthStatus();
         }
     }
+    const DeleteUser = async () => {
+        try {
+            await deleteUser(); // 'aws-amplify/auth deleteUser function
+            localStorage.setItem('isAuthenticated', 'false');
+            setIsAuthenticated(false);
+            setCurrentUser(null);
+            return "SUCCESS";
+        } catch (error) {
+            console.log(error);
+            return "FAILURE";
+        }
+    };
 
     return (
         //AuthProvider is a component that wraps around other components to provide them with authentication context.
-        <AuthContext.Provider value={{ isAuthenticated, currentUser, setIsAuthenticated, setCurrentUser, AuthHandleSignOut }}>
+        <AuthContext.Provider value={{ isAuthenticated, currentUser, setIsAuthenticated, setCurrentUser, AuthHandleSignOut, DeleteUser }}>
             {children}
         </AuthContext.Provider>
     );

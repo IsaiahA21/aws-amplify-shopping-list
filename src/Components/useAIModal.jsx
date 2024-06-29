@@ -1,68 +1,62 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { XMarkIcon, TrashIcon, CheckIcon } from "@heroicons/react/24/outline";
-import { getLabelFromImage } from "../api/prediction";
+import { getLabelsFromImage } from "../api/prediction";
+import { useAuth } from "../AuthContext";
 
-const handleImage = (
-  selectedImage,
+const handleImage = async (
+  event,
   setSelectedImage,
   fileInputRef,
   setLoading,
   setAIpredictedItems
 ) => {
-  return (
-    <>
-      <br />
+  console.log("here1");
 
-      {/* Input element to select an image file */}
-      <input
-        type="file"
-        name="myImage"
-        ref={fileInputRef} // A reference to the file input element so that I can reset its value when necessary.
-        // Event handler to capture file selection and update the state
-        onChange={async (event) => {
-          const file = event.target.files[0];
-          console.log(file); // Log the selected file
-          if (file.size > 5000000) {
-            setSelectedImage(null);
-            fileInputRef.current.value = ""; // Reset the file input value
-            alert("Image is too large!");
-            return;
-          } else if (
-            !["jpg", "jpeg", "png"].includes(file.name.split(".")[1])
-          ) {
-            setSelectedImage(null);
-            fileInputRef.current.value = ""; // Reset the file input value
-            alert("File type incorrect!");
-            return;
-          }
-          console.log("here");
-          setSelectedImage(file); // Update the state with the selected file
-          setAIpredictedItems(await getLabelFromImage(selectedImage));
-          setLoading(true);
-          console.log("here2");
-        }}
-      />
-    </>
-  );
+  const file = event.target.files[0];
+  if (!file) return;
+  console.log("here2");
+
+  console.log(file); // Log the selected file
+  if (file.size > 5000000) {
+    setSelectedImage(null);
+    fileInputRef.current.value = ""; // Reset the file input value
+    alert("Image is too large!");
+    return;
+  } else if (
+    !["jpg", "jpeg", "png"].includes(file.name.split(".").pop().toLowerCase())
+  ) {
+    setSelectedImage(null);
+    fileInputRef.current.value = ""; // Reset the file input value
+    alert("File type incorrect!");
+    return;
+  }
+
+  setSelectedImage(file); // Update the state with the selected file
+  setLoading(true);
+  console.log("here");
+  try {
+    const res = await getLabelsFromImage(file);
+    setAIpredictedItems(res);
+  } catch (error) {
+    console.error("Error fetching labels:", error);
+    alert("Error fetching labels");
+  } finally {
+    setLoading(false);
+  }
 };
 
 const UseAIModal = ({ isOpen, closeModal, addItem, addAllItems }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null); // Create a reference to the file input
   const [loading, setLoading] = useState(false);
+  const [AIpredictedItems, setAIpredictedItems] = useState([]);
+  const [predictedCount, setPredictedCount] = useState(0);
+  const { isAuthenticated, currentUser } = useAuth();
 
-  const [AIpredictedItems, setAIpredictedItems] = useState([
-    // "Item 1",
-    // "Item 2",
-    // "Item 3",
-    // "Item 4",
-    // "Item 5",
-    // "Item 6",
-    // "Item 7",
-    // "Item 8",
-    // "Item 9",
-    // "Item 10",
-  ]);
+  // Effect to update count when AIpredictedItems changes
+  useEffect(() => {
+    setPredictedCount(AIpredictedItems.length);
+  }, [AIpredictedItems]);
 
   if (!isOpen) {
     return null;
@@ -72,10 +66,17 @@ const UseAIModal = ({ isOpen, closeModal, addItem, addAllItems }) => {
   const handleAddItem = (item) => {
     addItem(item);
     setAIpredictedItems(AIpredictedItems.filter((i) => i !== item));
+    setPredictedCount(predictedCount - 1);
   };
   // function to handle remoining an item from the list
   const handleRemoveItem = (item) => {
     setAIpredictedItems(AIpredictedItems.filter((i) => i !== item));
+    setPredictedCount(predictedCount - 1);
+  };
+  const localHandle_AllAddItem = () => {
+    addAllItems(AIpredictedItems); // call the addAllItems function from the parent component(AddItem.jsx)
+    setAIpredictedItems([]); // Clear the AIpredictedItems array
+    setPredictedCount(0);
   };
 
   return (
@@ -100,18 +101,30 @@ const UseAIModal = ({ isOpen, closeModal, addItem, addAllItems }) => {
         </div>
 
         {/* Image upload */}
-        <div className="">
-          {handleImage(
-            selectedImage,
-            setSelectedImage,
-            fileInputRef,
-            setLoading,
-            setAIpredictedItems
-          )}
-        </div>
-
+        <input
+          type="file"
+          name="myImage"
+          ref={fileInputRef} // A reference to the file input element so that I can reset its value when necessary.
+          onChange={async (event) =>
+            handleImage(
+              event,
+              setSelectedImage,
+              fileInputRef,
+              setLoading,
+              setAIpredictedItems
+            )
+          }
+        />
+        <span className="text-sm text-gray-500 dark:text-gray-400">
+          Predicted Items: {predictedCount}
+        </span>
         {/* Display predictions */}
         <div className="p-4 space-y-4 max-h-64 overflow-y-auto">
+          {!isAuthenticated && !currentUser && (
+            <div className="text-center text-red-500 dark:text-red-400">
+              Please login to use this feature
+            </div>
+          )}
           {loading ? (
             // Loading spinner
             <>
@@ -119,7 +132,7 @@ const UseAIModal = ({ isOpen, closeModal, addItem, addAllItems }) => {
                 <div role="status">
                   <svg
                     aria-hidden="true"
-                    class="inline w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                    class="inline w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-yellow-600"
                     viewBox="0 0 100 101"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -139,6 +152,7 @@ const UseAIModal = ({ isOpen, closeModal, addItem, addAllItems }) => {
             </>
           ) : (
             // Display predictions
+
             AIpredictedItems.map((item) => (
               <div key={item} className="flex justify-between items-center">
                 <span className="text-gray-500 dark:text-gray-400">{item}</span>
@@ -165,19 +179,17 @@ const UseAIModal = ({ isOpen, closeModal, addItem, addAllItems }) => {
         <div class="flex justify-center items-center space-x-4 border-t pt-3">
           <button
             type="button"
-            onClick={closeModal}
+            onClick={() => setAIpredictedItems([])}
             class="py-2 w-20 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
           >
-            Cancel
+            Delete All
           </button>
           <button
             type="submit"
-            onClick={() => {
-              addAllItems(AIpredictedItems);
-            }}
+            onClick={localHandle_AllAddItem}
             class="w-20 py-2 text-sm font-medium text-center text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-900"
           >
-            Add
+            Add All
           </button>
         </div>
       </div>

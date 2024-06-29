@@ -1,0 +1,15 @@
+{
+    "resourceName": "PredictItems",
+    "identifyPolicyName": "identifyPolicy9274725b",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "adminAuthProtected": "DISALLOW",
+    "adminGuestProtected": "DISALLOW",
+    "identifyType": "identifyLabels",
+    "access": "auth | authAndGuest",
+"type": "LABELS | UNSAFE | ALL"
+}

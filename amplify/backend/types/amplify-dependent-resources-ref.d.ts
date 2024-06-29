@@ -26,6 +26,12 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     }
   },
+  "predictions": {
+    "PredictItems": {
+      "region": "string",
+      "type": "string"
+    }
+  },
   "storage": {
     "ShoppingListDB": {
       "Arn": "string",

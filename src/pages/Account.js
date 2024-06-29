@@ -8,7 +8,9 @@ import {
 import Navbar from '../Components/Navbar';
 import { useAuth } from "../AuthContext";
 import ResetPassword from '../Components/ResetPasswordModal';
+import DeleteAccountModal from '../Components/DeleteAccountModal';
 import { updateUserAttribute } from 'aws-amplify/auth';
+import { getUserItems, deleteItem } from '../api/db';
 
 
 /** FOr handling user reset password
@@ -22,7 +24,6 @@ const Account = (props) => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [userEmail, setUserEmail] = useState("username@gmail.com");
-
     const [newFirstName, setNewFirstName] = useState(firstName);
     const [newLastName, setNewLastName] = useState(lastName);
     const navigate = useNavigate();
@@ -31,6 +32,9 @@ const Account = (props) => {
     const { isAuthenticated, currentUser, setIsAuthenticated, setCurrentUser } = useAuth();
     const [openModal, setOpenModal] = useState(false);
     const [loading, setLoading] = useState(true); // State variable for loading
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const { DeleteUser } = useAuth();
+
 
     const theme = {
         name: 'my-theme',
@@ -137,6 +141,30 @@ const Account = (props) => {
             </div>
         ); // Display loading text while fetching data
     }
+
+    async function deleteUserItems() {
+        const items = await getUserItems();
+        items.forEach(async (item) => {
+            await deleteItem(item.timeStamp);
+        });
+    }
+
+    const handleDeleteUser = async () => {
+        await deleteUserItems();
+        const deleteResult = await DeleteUser(); // call the delete user function from the AuthContext
+        if (deleteResult === 'SUCCESS') {
+            alert('Your account has been deleted.');
+        } else {
+            alert('There was an error deleting your account. Please try again later!');
+        }
+        navigate('/');
+
+    };
+
+    const toggleDeleteModal = () => {
+        setOpenDeleteModal(!openDeleteModal);
+    };
+
     return (
         <div className={`${darkMode && "dark"}`}>
             <ThemeProvider theme={theme} colorMode={darkMode ? 'dark' : 'light'} >
@@ -202,6 +230,16 @@ const Account = (props) => {
                                 type="button" class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-200 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
                             >Reset Password
                             </button>
+                            <div
+                                onClick={toggleDeleteModal}
+                                className=' text-center' > <span className='underline hover:cursor-pointer'>
+                                    Delete Account</span>
+                            </div>
+                            <DeleteAccountModal
+                                isOpen={openDeleteModal}
+                                onClose={toggleDeleteModal}
+                                onDelete={handleDeleteUser}
+                            />
                         </form>
                     </main>
                 </div>

@@ -211,6 +211,8 @@ app.post(path, async function (req, res) {
 
 app.delete(path + '/object' + hashKeyPath + sortKeyPath, async function (req, res) {
   const params = {};
+  console.log("calling the backend delete func" + req.body)
+
   if (userIdPresent && req.apiGateway) {
     console.log("calling the backend delete func" + req.body)
     params[partitionKeyName] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
