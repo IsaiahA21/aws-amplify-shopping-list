@@ -1,11 +1,13 @@
 import React, { useState, useRef } from "react";
 import { XMarkIcon, TrashIcon, CheckIcon } from "@heroicons/react/24/outline";
+import { getLabelFromImage } from "../api/prediction";
 
 const handleImage = (
   selectedImage,
   setSelectedImage,
   fileInputRef,
-  setLoading
+  setLoading,
+  setAIpredictedItems
 ) => {
   return (
     <>
@@ -17,7 +19,7 @@ const handleImage = (
         name="myImage"
         ref={fileInputRef} // A reference to the file input element so that I can reset its value when necessary.
         // Event handler to capture file selection and update the state
-        onChange={(event) => {
+        onChange={async (event) => {
           const file = event.target.files[0];
           console.log(file); // Log the selected file
           if (file.size > 5000000) {
@@ -35,11 +37,8 @@ const handleImage = (
           }
           console.log("here");
           setSelectedImage(file); // Update the state with the selected file
+          setAIpredictedItems(await getLabelFromImage(selectedImage));
           setLoading(true);
-          setTimeout(() => {
-            console.log("here1");
-            setLoading(false);
-          }, 10000);
           console.log("here2");
         }}
       />
@@ -52,15 +51,15 @@ const UseAIModal = ({ isOpen, closeModal, addItem, addAllItems }) => {
   const fileInputRef = useRef(null); // Create a reference to the file input
   const [loading, setLoading] = useState(false);
 
-  const [predefinedItems, setPredefinedItems] = useState([
-    "Item 1",
-    "Item 2",
-    "Item 3",
-    "Item 4",
-    "Item 5",
-    "Item 6",
-    "Item 7",
-    "Item 8",
+  const [AIpredictedItems, setAIpredictedItems] = useState([
+    // "Item 1",
+    // "Item 2",
+    // "Item 3",
+    // "Item 4",
+    // "Item 5",
+    // "Item 6",
+    // "Item 7",
+    // "Item 8",
     // "Item 9",
     // "Item 10",
   ]);
@@ -72,11 +71,11 @@ const UseAIModal = ({ isOpen, closeModal, addItem, addAllItems }) => {
   // Function to handle adding an item and removing it from the list
   const handleAddItem = (item) => {
     addItem(item);
-    setPredefinedItems(predefinedItems.filter((i) => i !== item));
+    setAIpredictedItems(AIpredictedItems.filter((i) => i !== item));
   };
   // function to handle remoining an item from the list
   const handleRemoveItem = (item) => {
-    setPredefinedItems(predefinedItems.filter((i) => i !== item));
+    setAIpredictedItems(AIpredictedItems.filter((i) => i !== item));
   };
 
   return (
@@ -106,7 +105,8 @@ const UseAIModal = ({ isOpen, closeModal, addItem, addAllItems }) => {
             selectedImage,
             setSelectedImage,
             fileInputRef,
-            setLoading
+            setLoading,
+            setAIpredictedItems
           )}
         </div>
 
@@ -139,7 +139,7 @@ const UseAIModal = ({ isOpen, closeModal, addItem, addAllItems }) => {
             </>
           ) : (
             // Display predictions
-            predefinedItems.map((item) => (
+            AIpredictedItems.map((item) => (
               <div key={item} className="flex justify-between items-center">
                 <span className="text-gray-500 dark:text-gray-400">{item}</span>
                 <div>
@@ -173,7 +173,7 @@ const UseAIModal = ({ isOpen, closeModal, addItem, addAllItems }) => {
           <button
             type="submit"
             onClick={() => {
-              addAllItems(predefinedItems);
+              addAllItems(AIpredictedItems);
             }}
             class="w-20 py-2 text-sm font-medium text-center text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-900"
           >
