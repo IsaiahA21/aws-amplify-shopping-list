@@ -1,7 +1,7 @@
 [
-    { "id": "1", "name": "Milk" },
-    { "id": "2", "name": "Eggs" },
-    { "id": "3", "name": "Bread" },
-    { "id": "4", "name": "Butter" },
-    { "id": "5", "name": "Cheese" }
+    { "timeStamp": "1", "itemName": "Milk" , "userId": 1},
+    { "timeStamp": "2", "itemName": "Eggs" , "userId": 2},
+    { "timeStamp": "3", "itemName": "Bread", "userId": 3 },
+    { "timeStamp": "4", "itemName": "Butter","userId": 4 },
+    { "timeStamp": "5", "itemName": "Cheese", "userId":  5}
 ]

@@ -21,6 +21,7 @@ const Login = (props) => {
 
 
   const continueAsGuest = () => {
+    // AuthLogin(true);
     navigate('/ShoppingList');
   };
 
@@ -50,6 +51,7 @@ const Login = (props) => {
                   if (user) {
                     fetchUserAttributes().then(userDetails => {
                       console.log("log in baby")
+                      // AuthLogin(false);
                       setIsAuthenticated(true);
                       setCurrentUser(userDetails);
                       navigate('/ShoppingList');

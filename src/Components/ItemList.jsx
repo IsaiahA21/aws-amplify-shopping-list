@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { deleteItem } from "../api/db";
+import { useAuth } from "../AuthContext";
 
 const ItemList = ({ allItems = [], onDelete }) => {
   const [markedForDeletion, setMarkedForDeletion] = useState([]);
+  const { isAuthenticated } = useAuth();
 
   const handleDelete = async (item) => {
     console.log(
@@ -12,7 +14,9 @@ const ItemList = ({ allItems = [], onDelete }) => {
         item.itemName +
         " is marked for deletion."
     );
-    await deleteItem(item.timeStamp);
+    if (isAuthenticated) {
+      await deleteItem(item.timeStamp);
+    }
     setMarkedForDeletion([...markedForDeletion, item.timeStamp]);
     setTimeout(() => {
       onDelete(item);

@@ -5,6 +5,7 @@ import ShoppingList from './pages/ShoppingList';
 import { Routes, Route } from 'react-router-dom';
 import Account from './pages/Account';
 import { useAuth } from './AuthContext';
+import ProtectedRoute from './ProtectedRoute';
 
 // help on Router: https://hygraph.com/blog/routing-in-react
 function App() {
@@ -14,9 +15,14 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<Landing />} />
-        <Route path='/Login' element={<Login  />} />
+        <Route path='/Login' element={<Login />} />
         <Route path='/ShoppingList' element={<ShoppingList />} />
-        <Route path='/Account' element={<Account isAuthenticated={isAuthenticated} />} />
+        <Route path='/Account' element={
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <Account isAuthenticated={isAuthenticated} />
+          </ProtectedRoute>
+        } />
+        {/* <Route path='/Account' element={<Account isAuthenticated={isAuthenticated} />} /> */}
 
       </Routes>
     </>

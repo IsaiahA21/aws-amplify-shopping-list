@@ -1,0 +1,1 @@
+// Resourcee for AI Predict labels: https://docs.amplify.aws/gen1/javascript/build-a-backend/more-features/predictions/label-image/

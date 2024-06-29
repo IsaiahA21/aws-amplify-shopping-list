@@ -1,17 +1,16 @@
 //this file responsible for all the calls to the API from the frontend.
 
-import { fetchUserAttributes, getCurrentUser } from 'aws-amplify/auth'
+import { getCurrentUser } from 'aws-amplify/auth'
 import { get, put, del } from 'aws-amplify/api';
 
 const userMail = async () => {
     const mail = (await getCurrentUser()).signInDetails.loginId;
-
     return mail;
 }
+
 const ApiName = 'ShoppingListAPIGateway';
 
 export async function getUserItems() {
-    const userEmail = userMail();
     try {
         const userEmail = await userMail();
         const restOperation = get({
@@ -27,10 +26,10 @@ export async function getUserItems() {
     } catch (e) {
         console.log('GET call failed: ', e);
     }
+    return null;
 }
 export async function addUserItem(itemName) {
     const userEmail = await userMail();
-    // const userEmail = "isaiahasaolu@gmail.com";
     const itemObject = { userId: userEmail, timeStamp: new Date().getTime(), itemName };
 
     try {

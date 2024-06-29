@@ -23,12 +23,41 @@ function classNames(...classes) {
 
 const Navbar = (props) => {
   const navigate = useNavigate();
-  const { isAuthenticated, currentUser, setIsAuthenticated } = useAuth();
 
+  //When the currentUser() is updated in Account.js, the context provides the new value to Navbar, causing it to re-render and reflect the updated user name.
+  const { isAuthenticated, currentUser, AuthHandleSignOut } = useAuth();
+
+  const [loading, setLoading] = useState(true); // State variable for loading
+
+  /*useEffect(() => {
+
+      async function fetchData() {
+          try {
+              // Sort items by timestamp in descending order (most recent first)
+              const sortedItems = userItems.sort((a, b) => b.timeStamp - a.timeStamp);
+              setItems(sortedItems);
+
+          } catch (error) {
+              console.error('Error fetching user items:', error);
+          } finally {
+              setLoading(false); // Set loading to false after fetching data
+          }
+      }
+      if (!isAuthenticated) {
+          setItems(itemData); // set the items to the default items
+          setLoading(false); // Set loading to false after fetching data
+      } else {
+          fetchData();
+      }
+  }, []);
+  if (loading) {
+      console.log("loading")
+      return <div>Loading...</div>; // Display loading text while fetching data
+  }*/
   async function handleSignOut() {
     try {
-      await signOut();
-      setIsAuthenticated(false);
+      await AuthHandleSignOut(); // call the AuthHandleSignOut function from AuthContext.js
+      // await signOut();
       navigate("/");
     } catch (error) {
       console.log("Error in Navbar.js when attempting to sign out: " + error);

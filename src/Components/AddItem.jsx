@@ -2,21 +2,19 @@ import React, { useState, useEffect } from "react";
 import { SparklesIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import UseAIModal from "./useAIModal";
 import { getUserItems, addUserItem } from "../api/db";
+import { v4 as uuidv4 } from "uuid";
+import { useAuth } from "../AuthContext";
 
 const AddItem = ({ onAdd }) => {
   const [showAddDiv, setShowAddDiv] = useState(false); // State to manage div visibility
   const [itemText, setItemText] = useState("");
   const [openModal, setOpenModal] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   const handleInputClick = () => {
     setShowAddDiv(true);
   };
-  const AddItemButton = () => {
-    if (itemText.trim() !== "") {
-      onAdd(itemText);
-      setItemText("");
-    }
-  };
+
   const closeDiv = () => {
     setShowAddDiv(false);
   };
@@ -30,23 +28,39 @@ const AddItem = ({ onAdd }) => {
     setOpenModal(false);
   };
   const handleAddFromModal = (item) => {
-    onAdd(item);
+    doAdd(item);
   };
   // Function to correctly handle adding all items from modal
   const addAllItemsFromModal = (items) => {
-    items.forEach((item) => {
-      console.log(item);
-      onAdd(item);
+    items.forEach((item, index) => {
+      setTimeout(() => {
+        console.log(item);
+        doAdd(item);
+      }, index * 100); // Introduce a delay of .1 second between each item
     });
     handleCloseModal(); // Close modal after adding all items
   };
   const handleAddItem = async () => {
+    if (itemText.trim() !== "") {
+      doAdd(itemText);
+      setItemText(""); // Clear input after adding item
+    }
+  };
+  const doAdd = async (text, delay = 0) => {
+    let itemObject;
     try {
-      if (itemText.trim() !== "") {
-        let itemObject = await addUserItem(itemText); // Call addUserItem in db.js
-        onAdd(itemObject); //  update local state
-        setItemText(""); // Clear input after adding item
+      console.log("isAuthenticated is : ", isAuthenticated);
+
+      if (isAuthenticated) {
+        itemObject = await addUserItem(text); // Call addUserItem in db.js
+      } else {
+        itemObject = {
+          userId: uuidv4(),
+          itemName: text,
+          timeStamp: new Date().getTime(),
+        }; // Create item object with and current timestamp
       }
+      onAdd(itemObject); //  update local state
     } catch (error) {
       console.error("Error adding item:", error);
       // Handle error as needed
