@@ -95,6 +95,10 @@
     "ShoppingListDB": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
+    },
+    "ShoppingSiteVisitorDB": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
     }
   }
 }

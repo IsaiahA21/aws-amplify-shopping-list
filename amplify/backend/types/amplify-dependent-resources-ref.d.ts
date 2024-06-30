@@ -42,6 +42,14 @@ export type AmplifyDependentResourcesAttributes = {
       "SortKeyName": "string",
       "SortKeyType": "string",
       "StreamArn": "string"
+    },
+    "ShoppingSiteVisitorDB": {
+      "Arn": "string",
+      "Name": "string",
+      "PartitionKeyName": "string",
+      "PartitionKeyType": "string",
+      "Region": "string",
+      "StreamArn": "string"
     }
   }
 }

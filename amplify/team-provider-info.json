@@ -18,7 +18,8 @@
       },
       "storage": {
         "ShoppingListDB": {},
-        "viewCountDB": {}
+        "viewCountDB": {},
+        "ShoppingSiteVisitorDB": {}
       },
       "function": {
         "databaseFunction": {

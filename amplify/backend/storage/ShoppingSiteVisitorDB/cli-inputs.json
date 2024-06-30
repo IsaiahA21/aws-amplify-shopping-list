@@ -1,0 +1,10 @@
+{
+  "resourceName": "ShoppingSiteVisitorDB",
+  "tableName": "viewers",
+  "partitionKey": {
+    "fieldName": "viewId",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}
