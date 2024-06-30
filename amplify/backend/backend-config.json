@@ -9,6 +9,14 @@
           ],
           "category": "function",
           "resourceName": "databaseFunction"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "ShoppingSiteViewerFunc"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -45,6 +53,25 @@
     }
   },
   "function": {
+    "ShoppingSiteViewerFunc": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "ShoppingSiteVisitorDB"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "databaseFunction": {
       "build": true,
       "dependsOn": [
@@ -66,6 +93,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_ShoppingSiteViewerFunc_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ShoppingSiteViewerFunc"
+        }
+      ]
+    },
+    "AMPLIFY_function_ShoppingSiteViewerFunc_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ShoppingSiteViewerFunc"
+        }
+      ]
+    },
     "AMPLIFY_function_databaseFunction_deploymentBucketName": {
       "usedBy": [
         {

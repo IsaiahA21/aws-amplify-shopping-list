@@ -25,6 +25,10 @@
         "databaseFunction": {
           "deploymentBucketName": "amplify-awswebproject-dev-4e9e8-deployment",
           "s3Key": "amplify-builds/databaseFunction-4e4d48616c714732516b-build.zip"
+        },
+        "ShoppingSiteViewerFunc": {
+          "deploymentBucketName": "amplify-awswebproject-dev-4e9e8-deployment",
+          "s3Key": "amplify-builds/ShoppingSiteViewerFunc-6863626470724c2f776d-build.zip"
         }
       },
       "api": {
