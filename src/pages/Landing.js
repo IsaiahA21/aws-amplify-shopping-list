@@ -1,5 +1,11 @@
 import { Link } from 'react-router-dom';
+import { getViewCount, IncrementViewCount } from '../api/vistors';
 
+const getViews = async () => {
+    const update = await IncrementViewCount();
+    // const views = await getViewCount();
+    // console.log("views is " + views);
+}
 //Landing Page
 // background animation: https://tailwindflex.com/@anonymous/background-animation
 function Landing() {
@@ -26,6 +32,7 @@ function Landing() {
             <main className="flex flex-col items-center  z-10 h-screen">
                 <div class="w-max">
                     <h1
+                        onClick={getViews}
                         class="animate-typing overflow-hidden whitespace-nowrap border-r-4 border-r-white pr-5 pb-2 text-2xl sm:text-5xl text-white md:text-7xl  lg:text-8xl font-bold mt-5">
                         Shopping List
                         {/* itinerary plan */}

@@ -18,10 +18,10 @@ export async function getUserItems() {
             path: '/item/' + userEmail,
         });
         const response = await restOperation.response;
-        console.log('GET call succeeded: ', response);
+        // console.log('GET call succeeded: ', response);
 
         const resBody = await response.body.json()
-        console.log('Response Body: ', resBody);
+        // console.log('Response Body: ', resBody);
         return resBody;
     } catch (e) {
         console.log('GET call failed: ', e);

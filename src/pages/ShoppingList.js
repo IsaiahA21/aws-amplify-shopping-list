@@ -22,9 +22,9 @@ const ShoppingList = (props) => {
                 const userItems = await getUserItems();
                 if (userItems === null) {
                     setItems(itemData);
-                    console.log("User not login, using default items")
+                    // console.log("User not login, using default items")
                 } else {
-                    console.log("retrived this user items:" + JSON.stringify(userItems))
+                    // console.log("retrived this user items:" + JSON.stringify(userItems))
                     // Sort items by timestamp in descending order (most recent first)
                     const sortedItems = userItems.sort((a, b) => b.timeStamp - a.timeStamp);
                     setItems(sortedItems);
@@ -40,7 +40,6 @@ const ShoppingList = (props) => {
         fetchData();
     }, []);
     if (loading) {
-        console.log("loading")
         return (
             <div class="text-center">
                 <div role="status">
