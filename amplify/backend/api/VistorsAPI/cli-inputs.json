@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/visitor": {
+      "name": "/visitor",
+      "lambdaFunction": "ShoppingListVisitorCount",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

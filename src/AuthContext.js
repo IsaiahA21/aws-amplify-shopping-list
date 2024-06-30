@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
                 localStorage.setItem('isAuthenticated', 'true');
                 setIsAuthenticated(true);
                 setCurrentUser(user);
-                console.log(user)
+                // console.log(user)
 
             } catch (error) {
                 localStorage.setItem('isAuthenticated', 'false');
