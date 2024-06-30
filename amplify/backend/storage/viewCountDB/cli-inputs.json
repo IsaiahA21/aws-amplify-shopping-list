@@ -1,0 +1,12 @@
+{
+    "resourceName": "viewCountDB",
+    "tableName": "vistors",
+    "partitionKey": {
+      "fieldName": "viewId",
+      "fieldType": "string"
+    },
+    "sortKey": null,
+    "gsi": [],
+    "triggerFunctions": []
+  }
+  
