@@ -4,12 +4,12 @@ import Login from './pages/Login';
 import ShoppingList from './pages/ShoppingList';
 import { Routes, Route } from 'react-router-dom';
 import Account from './pages/Account';
-import { useAuth } from './AuthContext';
-import ProtectedRoute from './ProtectedRoute';
+import { useAuth } from './hooks/AuthContext';
+import ProtectedRoute from './hooks/ProtectedRoute';
 
 // help on Router: https://hygraph.com/blog/routing-in-react
 function App() {
-  const { isAuthenticated, currentUser } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   return (
     <>

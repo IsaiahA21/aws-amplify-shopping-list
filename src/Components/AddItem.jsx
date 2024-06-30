@@ -3,7 +3,7 @@ import { SparklesIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import UseAIModal from "./useAIModal";
 import { getUserItems, addUserItem } from "../api/db";
 import { v4 as uuidv4 } from "uuid";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../hooks/AuthContext";
 
 const AddItem = ({ onAdd }) => {
   const [showAddDiv, setShowAddDiv] = useState(false); // State to manage div visibility
@@ -49,7 +49,7 @@ const AddItem = ({ onAdd }) => {
   const doAdd = async (text, delay = 0) => {
     let itemObject;
     try {
-      console.log("isAuthenticated is : ", isAuthenticated);
+      // console.log("isAuthenticated is : ", isAuthenticated);
 
       if (isAuthenticated) {
         itemObject = await addUserItem(text); // Call addUserItem in db.js

@@ -15,7 +15,7 @@ import {} from "@heroicons/react/24/solid";
 import { useDarkMode } from "../hooks/useDarkMode";
 import { signOut } from "aws-amplify/auth";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../hooks/AuthContext";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -29,31 +29,6 @@ const Navbar = (props) => {
 
   const [loading, setLoading] = useState(true); // State variable for loading
 
-  /*useEffect(() => {
-
-      async function fetchData() {
-          try {
-              // Sort items by timestamp in descending order (most recent first)
-              const sortedItems = userItems.sort((a, b) => b.timeStamp - a.timeStamp);
-              setItems(sortedItems);
-
-          } catch (error) {
-              console.error('Error fetching user items:', error);
-          } finally {
-              setLoading(false); // Set loading to false after fetching data
-          }
-      }
-      if (!isAuthenticated) {
-          setItems(itemData); // set the items to the default items
-          setLoading(false); // Set loading to false after fetching data
-      } else {
-          fetchData();
-      }
-  }, []);
-  if (loading) {
-      console.log("loading")
-      return <div>Loading...</div>; // Display loading text while fetching data
-  }*/
   async function handleSignOut() {
     try {
       await AuthHandleSignOut(); // call the AuthHandleSignOut function from AuthContext.js
@@ -114,12 +89,10 @@ const Navbar = (props) => {
                     </div>
                   </div>
                   {/* user fullname */}
-                  {isAuthenticated && currentUser ? (
+                  {isAuthenticated && currentUser && (
                     <div className="hidden sm:block text-black dark:text-white">
                       {currentUser.name}
                     </div>
-                  ) : (
-                    console.log("name not displayed")
                   )}
 
                   {/* Profile dropdown */}

@@ -3,12 +3,11 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { BrowserRouter } from 'react-router-dom';
 import config from './aws-exports'
 import { Amplify } from 'aws-amplify'
-import { AuthProvider } from './AuthContext';
+import { AuthProvider } from './hooks/AuthContext';
 
 Amplify.configure(config)
 // Configure Amplify

@@ -11,8 +11,8 @@ import {
   ToggleButtonGroup,
 } from '@aws-amplify/ui-react';
 import { useDarkMode } from '../hooks/useDarkMode'; // Import the custom hook
-import { useAuth } from '../AuthContext';
-import { AuthUser, fetchUserAttributes, signUp } from 'aws-amplify/auth';
+import { useAuth } from '../hooks/AuthContext';
+import { fetchUserAttributes } from 'aws-amplify/auth';
 
 const Login = (props) => {
   const [darkMode, toggleDarkMode] = useDarkMode();
@@ -59,7 +59,7 @@ const Login = (props) => {
                 {({ user }) => {
                   if (user) {
                     fetchUserAttributes().then(userDetails => {
-                      console.log("log in baby")
+                      // console.log("log in baby")
                       // AuthLogin(false);
                       setIsAuthenticated(true);
                       setCurrentUser(userDetails);

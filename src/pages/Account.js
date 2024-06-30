@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     defaultDarkModeOverride,
-    ThemeProvider, AccountSettings, Card, withAuthenticator
+    ThemeProvider
 } from '@aws-amplify/ui-react';
 import Navbar from '../Components/Navbar';
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../hooks/AuthContext";
 import ResetPassword from '../Components/ResetPasswordModal';
 import DeleteAccountModal from '../Components/DeleteAccountModal';
 import { updateUserAttribute } from 'aws-amplify/auth';
@@ -100,10 +100,6 @@ const Account = (props) => {
     }
 
     useEffect(() => {
-        // Redirect to login if not authenticated
-        // if (!isAuthenticated || !currentUser) {
-        //     navigate('/Login');
-        // } else {
         // Fetch user attributes if authenticated
         const fetchUserAttributes = async () => {
             try {

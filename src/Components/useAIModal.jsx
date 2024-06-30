@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { XMarkIcon, TrashIcon, CheckIcon } from "@heroicons/react/24/outline";
 import { getLabelsFromImage } from "../api/prediction";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../hooks/AuthContext";
 
 const handleImage = async (
   event,

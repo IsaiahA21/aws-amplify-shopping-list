@@ -1,12 +1,13 @@
 import { get, put, del } from 'aws-amplify/api';
 
-const viewApiName = 'VistorsAPI';
+const viewApiName = 'ShoppingListAPIGateway';
 
+// path is the api gateway path we are trying to reach
 export async function getViewCount() {
     try {
         const operation = get({
             apiName: viewApiName,
-            path: '/visitor/1',
+            path: '/viewers/1',
         })
         const response = await operation.response;
         // console.log('GET call succeeded: ', response);
@@ -23,14 +24,17 @@ export async function getViewCount() {
 export async function IncrementViewCount() {
     try {
         //get current view count
-        const getCount = await getViewCount();
+        let getCount = await getViewCount();
+        if (getCount == null){
+            getCount =0;
+        }
 
-        const currentCount = getCount || 0; // Assuming 'count' is the attribute name in DynamoDB
+        const currentCount = getCount ; // Assuming 'count' is the attribute name in DynamoDB
         const count = currentCount + 1;
 
         const operation = put({
             apiName: viewApiName,
-            path: '/visitor',
+            path: '/viewers',
             options: {
                 body: { viewId: "1", count: count }
             }

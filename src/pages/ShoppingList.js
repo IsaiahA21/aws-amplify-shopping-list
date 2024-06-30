@@ -8,7 +8,7 @@ import AddItem from '../Components/AddItem';
 import ItemList from '../Components/ItemList';
 import itemData from "../others/items.json";
 import Navbar from '../Components/Navbar';
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../hooks/AuthContext";
 import { getUserItems } from "../api/db"
 
 const ShoppingList = (props) => {
