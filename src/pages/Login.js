@@ -12,7 +12,7 @@ import {
 } from '@aws-amplify/ui-react';
 import { useDarkMode } from '../hooks/useDarkMode'; // Import the custom hook
 import { useAuth } from '../AuthContext';
-import { AuthUser, fetchUserAttributes } from 'aws-amplify/auth';
+import { AuthUser, fetchUserAttributes, signUp } from 'aws-amplify/auth';
 
 const Login = (props) => {
   const [darkMode, toggleDarkMode] = useDarkMode();
@@ -29,6 +29,15 @@ const Login = (props) => {
     name: 'my-theme',
     overrides: [defaultDarkModeOverride],
   };
+  const customFormField = {
+    signUp: {
+      name: {
+        placeholder: "Enter your full name",
+        isRequired: true,
+        label: "Full name"
+      }
+    }
+  }
   return (
     // if darkMode is true, add the dark class to the div
     <div className={`${darkMode ? 'dark' : ''}`}>
@@ -44,7 +53,7 @@ const Login = (props) => {
             <div className="hidden sm:block min-h-96 border-l border-gray-600 dark:border-gray-400 mx-4"></div>
 
             <div className="mt-4 sm:mt-0">
-              <Authenticator loginMechanisms={['email']}
+              <Authenticator loginMechanisms={['email']} formFields={customFormField}
               // socialProviders={['amazon', 'apple', 'facebook', 'google']}
               >
                 {({ user }) => {
