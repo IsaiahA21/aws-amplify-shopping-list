@@ -24,10 +24,6 @@
         "databaseFunction": {
           "deploymentBucketName": "amplify-awswebproject-dev-4e9e8-deployment",
           "s3Key": "amplify-builds/databaseFunction-4e4d48616c714732516b-build.zip"
-        },
-        "ShoppingListVisitorCount": {
-          "deploymentBucketName": "amplify-awswebproject-dev-4e9e8-deployment",
-          "s3Key": "amplify-builds/ShoppingListVisitorCount-457a49536c4352667345-build.zip"
         }
       },
       "api": {

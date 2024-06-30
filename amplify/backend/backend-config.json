@@ -13,20 +13,6 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
-    },
-    "VistorsAPI": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "ShoppingListVisitorCount"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "API Gateway"
     }
   },
   "auth": {
@@ -59,25 +45,6 @@
     }
   },
   "function": {
-    "ShoppingListVisitorCount": {
-      "build": true,
-      "dependsOn": [
-        {
-          "attributeEnvMap": {
-            "Arn": "TABLE_ARN",
-            "Name": "TABLE_NAME"
-          },
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "storage",
-          "resourceName": "viewCountDB"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "databaseFunction": {
       "build": true,
       "dependsOn": [
@@ -99,22 +66,6 @@
     }
   },
   "parameters": {
-    "AMPLIFY_function_ShoppingListVisitorCount_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "ShoppingListVisitorCount"
-        }
-      ]
-    },
-    "AMPLIFY_function_ShoppingListVisitorCount_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "ShoppingListVisitorCount"
-        }
-      ]
-    },
     "AMPLIFY_function_databaseFunction_deploymentBucketName": {
       "usedBy": [
         {
