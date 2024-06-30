@@ -31,8 +31,7 @@
         }
       },
       "api": {
-        "ShoppingListAPIGateway": {},
-        "VistorsAPI": {}
+        "ShoppingListAPIGateway": {}
       },
       "predictions": {
         "PredictItems": {}
