@@ -155,18 +155,18 @@ const UseAIModal = ({ isOpen, closeModal, addItem, addAllItems }) => {
 
             AIpredictedItems.map((item) => (
               <div key={item} className="flex justify-between items-center">
-                <span className="text-gray-500 dark:text-gray-400">{item}</span>
+                <span className="text-black dark:text-white">{item}</span>
                 <div>
                   <button
                     type="button"
-                    className="hover:bg-red-400 rounded-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 "
+                    className="hover:bg-red-400 rounded-lg px-5 py-2.5 text-center "
                     onClick={() => handleRemoveItem(item)}
                   >
-                    <TrashIcon className="w-4 h-auto" />
+                    <TrashIcon className="w-4 h-auto dark:text-white" />
                   </button>
                   <button
                     type="button"
-                    className=" hover:bg-green-400  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 "
+                    className=" hover:bg-green-400  rounded-lg  px-5 py-2.5 text-center dark:text-white"
                     onClick={() => handleAddItem(item)}
                   >
                     <CheckIcon className="w-4 h-auto" />

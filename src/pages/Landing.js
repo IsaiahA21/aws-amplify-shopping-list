@@ -44,8 +44,7 @@ function Landing() {
                 <div class="w-max">
                     <h1
                         class="animate-typing overflow-hidden whitespace-nowrap border-r-4 border-r-white pr-5 pb-2 text-2xl sm:text-5xl text-white md:text-7xl  lg:text-8xl font-bold mt-5">
-                        Shopping List
-                        {/* itinerary plan */}
+                        SmartList
                     </h1>
                 </div>
                 <Link to="/Login" className="button-link m-auto" >

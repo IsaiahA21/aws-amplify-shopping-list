@@ -228,7 +228,7 @@ const Account = (props) => {
                             </button>
                             <div
                                 onClick={toggleDeleteModal}
-                                className=' text-center' > <span className='underline hover:cursor-pointer'>
+                                className=' text-center' > <span className='underline hover:cursor-pointer dark:text-gray-400'>
                                     Delete Account</span>
                             </div>
                             <DeleteAccountModal
