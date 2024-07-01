@@ -6,6 +6,11 @@ My goal was to create a modern, user-friendly shopping list application that all
 As of July 1st 2024 (Canada Day), the application is currently deployed on AWS Amplify and can be accessed [here](https://master.d3474n4b5kymz.amplifyapp.com/).
 Unfortunately, I'm not made out of money, so the application will eventually be taken down.
 
+## Technologies Used
+- React, Tailwind CSS, AWS Amplify, AWS Rekognition, AWS DynamoDB, AWS Lambda, AWS API Gateway
+
+## Project Milestones and Challenges
+[Project Milestones and Challenges](projectMilestones%26challenges.md)
 
 ### Implementing AWS Amplify 
 Building the application with AWS Amplify was a great experience. The Amplify CLI made it easy to create the necessary resources for the application. However, I did run into issues and a general lack of knowledge along the way that required me to troubleshoot.
