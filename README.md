@@ -1,6 +1,37 @@
-# Getting Started with Create React App
+# Getting Started with SmartList
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project took inspiration from [AmplifyWorkshop](https://github.com/josephtey/AmplifyWorkshop?tab=readme-ov-file#Sending-data-between-Frontend-and-Backend).
+My goal was to create a modern, user-friendly shopping list application that allows users to create, and delete items from their shopping list. The application utilizes AWS Rekognition to identify items.
+
+As of July 1st 2024 (Canada Day), the application is currently deployed on AWS Amplify and can be accessed [here](https://master.d3474n4b5kymz.amplifyapp.com/).
+Unfortunately, I'm not made out of money, so the application will eventually be taken down.
+
+
+### Implementing AWS Amplify 
+Building the application with AWS Amplify was a great experience. The Amplify CLI made it easy to create the necessary resources for the application. However, I did run into issues and a general lack of knowledge along the way that required me to troubleshoot.
+helpful link: https://www.youtube.com/watch?v=tx0k7daEoUA
+https://www.youtube.com/watch?v=puaydMvngj4
+
+## Using the Application (Authenticated and Guess Users)
+
+![Landing page](/readmePics/landingPage.png) Landing page of the application
+![Dark mode](/readmePics/darkMode.png) Dark mode of the application (user not authenticated)
+
+### Guest User
+![guest shopping list](/readmePics/guestShoppingList.png) Guest user shopping list.
+There are sample items in the shopping list that can be deleted by the user. But these items are not saved in the database and will be lost when the page is refreshed.
+
+![guest AI predict](/readmePics/guestAIPredict.png) Guest user can't use the AI prediction feature to identify items in an image. When the user upload an image and the application wouldn't return a prediction.
+
+### Authenticated User
+![Auth signUp](/readmePics/authSignUp.png) Authenticated user sign up page. The user can sign up with an email and password.
+
+![Auth shoppingList](/readmePics/authShoppingList.png) 
+Authenticated user shopping list. The user can add, delete, and check off items from the shopping list. The shopping list is saved in the database and will persist when the page is refreshed.
+
+![Auth AI predict](/readmePics/authAIPredict.png) Authenticated user can use the AI prediction feature to identify items in an image. When the user upload an image, the application will return a prediction of the items in the image. Predictions with a confidence level of 84.5% or higher will be added to the shopping list.
+
+![Auth Account Page](/readmePics/authAccountPage.png) Authenticated user account page.By clicking on the profile icon on the navbar, the user can either sign out of the application or navigate to their Account Page. On the Account Page, the user can change their name, their password or delete their account.
 
 ## Available Scripts
 
@@ -29,46 +60,10 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
 To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
-### Implementing AWS Amplify 
-helpful link: https://www.youtube.com/watch?v=tx0k7daEoUA
-https://www.youtube.com/watch?v=puaydMvngj4
+
