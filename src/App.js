@@ -22,7 +22,6 @@ function App() {
             <Account isAuthenticated={isAuthenticated} />
           </ProtectedRoute>
         } />
-        {/* <Route path='/Account' element={<Account isAuthenticated={isAuthenticated} />} /> */}
 
       </Routes>
     </>
