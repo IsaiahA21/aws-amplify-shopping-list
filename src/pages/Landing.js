@@ -13,16 +13,13 @@ function Landing() {
     const [viewCount, setViewCount] = useState();
 
     useEffect(() => {
-        const getViews = async () => {
-            const views = await getViewCount();
+        const updateAndFetchViews = async () => {
+            await hanldeViewIncrement(); // first increment the view count
+            const views = await getViewCount(); // then fetch updated views
             // console.log("views is " + views);
             setViewCount(views);
         }
-        getViews();
-    }, [])
-
-    useEffect(() => {
-        hanldeViewIncrement();
+        updateAndFetchViews();
     }, [])
     return (
         <>
