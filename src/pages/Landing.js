@@ -20,6 +20,10 @@ function Landing() {
         }
         getViews();
     }, [])
+
+    useEffect(() => {
+        hanldeViewIncrement();
+    }, [])
     return (
         <>
             {/* <!--Start Background Animation Body--> */}
@@ -48,7 +52,7 @@ function Landing() {
                     </h1>
                 </div>
                 <Link to="/Login" className="button-link m-auto" >
-                    <button onClick={hanldeViewIncrement}
+                    <button
                         className="animate-bounce focus:animate-none hover:animate-none w-auto h-11 px-2 bg-green-500 rounded-3xl text-lg sm:h-15 xl:py-7 xl:px-5 lg:auto font-semibold sm:text-2xl text-white  justify-center m-auto flex items-center space-x-2">
                         <div>Get Started</div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="h-6 w-6" >
